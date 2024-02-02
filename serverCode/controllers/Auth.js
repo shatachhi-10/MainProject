@@ -57,6 +57,7 @@ exports.signup = async (req, res) => {
 
 		// Find the most recent OTP for the email
 		const response = await OTP.find({ email }).sort({ createdAt: -1 }).limit(1);
+		// console.log(await OTP.find({ email }))
 		console.log(response);
 		if (response.length === 0) {
 			// OTP not found for the email
@@ -142,13 +143,12 @@ exports.login = async (req, res) => {
 		// Generate JWT token and Compare Password
 		if (await bcrypt.compare(password, user.password)) {
 			const token = jwt.sign(
-				{ email: user.email, id: user._id, role: user.role },
+				{ email: user.email, id: user._id, accountType: user.accountType },
 				process.env.JWT_SECRET,
 				{
 					expiresIn: "24h",
 				}
 			);
-
 			// Save token to user document in database
 			user.token = token;
 			user.password = undefined;
@@ -202,7 +202,7 @@ exports.sendotp = async (req, res) => {
 			lowerCaseAlphabets: false,
 			specialChars: false,
 		});
-		const result = await OTP.findOne({ otp: otp });
+		let result = await OTP.findOne({ otp: otp });
 		console.log("Result is Generate OTP Func");
 		console.log("OTP", otp);
 		console.log("Result", result);
@@ -210,6 +210,7 @@ exports.sendotp = async (req, res) => {
 			otp = otpGenerator.generate(6, {
 				upperCaseAlphabets: false,
 			});
+			result = await OTP.findOne({ otp: otp });
 		}
 		const otpPayload = { email, otp };
 		const otpBody = await OTP.create(otpPayload);

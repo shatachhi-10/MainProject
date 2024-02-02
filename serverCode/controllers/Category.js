@@ -12,6 +12,7 @@ exports.createCategory = async (req, res) => {
 			name: name,
 			description: description,
 		});
+        
 		console.log(CategorysDetails);
 		return res.status(200).json({
 			success: true,
@@ -31,10 +32,12 @@ exports.showAllCategories = async (req, res) => {
 			{},
 			{ name: true, description: true }
 		);
+        
 		res.status(200).json({
 			success: true,
 			data: allCategorys,
 		});
+        
 	} catch (error) {
 		return res.status(500).json({
 			success: false,

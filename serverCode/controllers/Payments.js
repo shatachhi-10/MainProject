@@ -92,7 +92,7 @@ exports.capturePayment = async (req, res) => {
 
 exports.verifySignature = async (req, res) => {
     const webhookSecret = "12345678";
-
+    
     const signature = req.headers["x-razorpay-signature"];
 
     const shasum =  crypto.createHmac("sha256", webhookSecret);

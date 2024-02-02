@@ -21,7 +21,7 @@ exports.createCourse = async (req, res) => {
 		} = req.body;
 
 		// Get thumbnail image from request files
-		const thumbnail = req.files.thumbnailImage;
+	      const thumbnail = req.files.thumbnailImage;
 
 		// Check if any of the required fields are missing
 		if (
@@ -93,12 +93,13 @@ exports.createCourse = async (req, res) => {
 			},
 			{ new: true }
 		);
-		// Add the new course to the Categories
 		await Category.findByIdAndUpdate(
-			{ _id: category },
+			{
+				_id: categoryDetails._id,
+			},
 			{
 				$push: {
-					course: newCourse._id,
+					courses: newCourse._id,
 				},
 			},
 			{ new: true }
@@ -166,7 +167,7 @@ exports.getCourseDetails = async (req, res) => {
                                             }
                                         )
                                         .populate("category")
-                                        .populate("ratingAndreviews")
+                                        .populate("ratingAndReviews")
                                         .populate({
                                             path:"courseContent",
                                             populate:{

@@ -11,6 +11,7 @@ exports.updateProfile = async (req, res) => {
 		const userDetails = await User.findById(id);
 		const profile = await Profile.findById(userDetails.additionalDetails);
 
+
 		// Update the profile fields
 		profile.dateOfBirth = dateOfBirth;
 		profile.about = about;
@@ -66,6 +67,7 @@ exports.deleteAccount = async (req, res) => {
 	}
 };
 
+
 exports.getAllUserDetails = async (req, res) => {
 	try {
 		const id = req.user.id;
@@ -86,10 +88,11 @@ exports.getAllUserDetails = async (req, res) => {
 	}
 };
 
+
 exports.updateDisplayPicture = async (req, res) => {
     try {
-      const displayPicture = req.files.displayPicture
-      const userId = req.user.id
+      const displayPicture = req.files.displayPicture;
+      const userId = req.user.id;
       const image = await uploadImageToCloudinary(
         displayPicture,
         process.env.FOLDER_NAME,
