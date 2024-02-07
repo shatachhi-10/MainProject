@@ -2,18 +2,19 @@ import React, { useEffect, useState } from "react"
 import { BiInfoCircle } from "react-icons/bi"
 import { HiOutlineGlobeAlt } from "react-icons/hi"
 // import { ReactMarkdown } from "react-markdown/lib/react-markdown"
-import { useDispatch, useSelector } from "react-redux"
-import { useNavigate, useParams } from "react-router-dom"
 import ReactMarkdown from 'react-markdown';
 
-import ConfirmationModal from "../components/common/ConfirmationModal"
-import Footer from "../components/common/Footer"
-import RatingStars from "../components/common/RatingStars"
+import { useDispatch, useSelector } from "react-redux"
+import { useNavigate, useParams } from "react-router-dom"
+
+import ConfirmationModal from "../components/Common/ConfirmationModal"
+import Footer from "../components/Common/Footer"
+import RatingStars from "../components/Common/RatingStars"
 import CourseAccordionBar from "../components/core/Course/CourseAccordionBar"
 import CourseDetailsCard from "../components/core/Course/CourseDetailsCard"
 import { formatDate } from "../services/formatDate"
 import { fetchCourseDetails } from "../services/operations/courseDetailsAPI"
-import { buyCourse } from "../services/operations/studentFeaturesAPI"
+import { BuyCourse } from "../services/operations/studentFeaturesAPI"
 import GetAvgRating from "../utils/avgRating"
 import Error from "./Error"
 
@@ -98,13 +99,13 @@ function CourseDetails() {
     courseContent,
     ratingAndReviews,
     instructor,
-    studentsEnrolled,
+    studentsEnroled,
     createdAt,
   } = response.data?.courseDetails
 
   const handleBuyCourse = () => {
     if (token) {
-      buyCourse(token, [courseId], user, navigate, dispatch)
+      BuyCourse(token, [courseId], user, navigate, dispatch)
       return
     }
     setConfirmationModal({
@@ -153,7 +154,7 @@ function CourseDetails() {
                 <span className="text-yellow-25">{avgReviewCount}</span>
                 <RatingStars Review_Count={avgReviewCount} Star_Size={24} />
                 <span>{`(${ratingAndReviews.length} reviews)`}</span>
-                <span>{`${studentsEnrolled.length} students enrolled`}</span>
+                <span>{`${studentsEnroled.length} students enrolled`}</span>
               </div>
               <div>
                 <p className="">
