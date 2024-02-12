@@ -23,6 +23,10 @@ exports.signup = async (req, res) => {
       contactNumber,
       otp,
     } = req.body
+    // Convert email to lowercase
+    const lowerCaseEmail = email.toLowerCase();  
+
+    
     // Check if All Details are there or not
     if (
       !firstName ||
@@ -47,7 +51,7 @@ exports.signup = async (req, res) => {
     }
 
     // Check if user already exists
-    const existingUser = await User.findOne({ email })
+    const existingUser = await User.findOne({ email:lowerCaseEmail })
     if (existingUser) {
       return res.status(400).json({
         success: false,
@@ -56,7 +60,8 @@ exports.signup = async (req, res) => {
     }
 
     // Find the most recent OTP for the email
-    const response = await OTP.find({ email }).sort({ createdAt: -1 }).limit(1)
+    console.log("lowerCaseEmail-->",lowerCaseEmail)
+    const response = await OTP.find({ email:lowerCaseEmail }).sort({ createdAt: -1 }).limit(1)
     console.log(response)
     if (response.length === 0) {
       // OTP not found for the email
@@ -89,7 +94,7 @@ exports.signup = async (req, res) => {
     const user = await User.create({
       firstName,
       lastName,
-      email,
+      email:lowerCaseEmail,
       contactNumber,
       password: hashedPassword,
       accountType: accountType,
@@ -116,7 +121,7 @@ exports.signup = async (req, res) => {
 exports.login = async (req, res) => {
   try {
     // Get email and password from request body
-    const { email, password } = req.body
+    let { email, password } = req.body
 
     // Check if email or password is missing
     if (!email || !password) {
@@ -126,6 +131,10 @@ exports.login = async (req, res) => {
         message: `Please Fill up All the Required Fields`,
       })
     }
+
+    // Convert entered email to lowercase
+     email = email.toLowerCase();
+
 
     // Find user with provided email
     const user = await User.findOne({ email }).populate("additionalDetails")
@@ -181,20 +190,23 @@ exports.login = async (req, res) => {
 // Send OTP For Email Verification
 exports.sendotp = async (req, res) => {
   try {
-    const { email } = req.body
-
+    let { email } = req.body
+    email= email.toLowerCase();
+        console.log("email-->",email)
     // Check if user is already present
     // Find user with provided email
     const checkUserPresent = await User.findOne({ email })
     // to be used in case of signup
-
+    console.log("checkUserPresent-->",checkUserPresent)
     // If user found with provided email
     if (checkUserPresent) {
       // Return 401 Unauthorized status code with error message
+      
       return res.status(401).json({
         success: false,
         message: `User is Already Registered`,
       })
+      
     }
 
     var otp = otpGenerator.generate(6, {

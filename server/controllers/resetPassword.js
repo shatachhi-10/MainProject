@@ -1,4 +1,4 @@
-const User = require("../models/User")
+ const User = require("../models/User")
 const mailSender = require("../utils/mailSender")
 const bcrypt = require("bcrypt")
 const crypto = require("crypto")
@@ -31,7 +31,7 @@ exports.resetPasswordToken = async (req, res) => {
     await mailSender(
       email,
       "Password Reset",
-      `Your Link for email verification is ${url}. Please click this url to reset your password.`
+      `Your Link for email verification is ${url} Please click this url to reset your password.`
     )
 
     res.json({
