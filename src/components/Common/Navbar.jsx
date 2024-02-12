@@ -10,6 +10,7 @@ import { apiConnector } from "../../services/apiConnector"
 import { categories } from "../../services/apis"
 import { ACCOUNT_TYPE } from "../../utils/constants"
 import ProfileDropdown from "../core/Auth/ProfileDropdown"
+import Logos from "../../assets/Logo/Logos.png"
 
 // const subLinks = [
 //   {
@@ -67,7 +68,7 @@ function Navbar() {
       <div className="flex w-11/12 max-w-maxContent items-center justify-between">
         {/* Logo */}
         <Link to="/">
-          <img src={logo} alt="Pedagox"  width={160} height={32} loading="lazy" />
+          <img src={Logos} alt="Pedagox"  width={160} height={32} loading="lazy" />
         </Link>
         {/* Navigation links */}
         <nav className="hidden md:block">
