@@ -8,7 +8,8 @@ const {
   updateDisplayPicture,
   getEnrolledCourses,
   instructorDashboard,
-} = require("../controllers/profile")
+  UserDetailsById,
+} = require("../controllers/Profile")
 
 // ********************************************************************************************************
 //                                      Profile routes
@@ -21,5 +22,6 @@ router.get("/getUserDetails", auth, getAllUserDetails)
 router.get("/getEnrolledCourses", auth, getEnrolledCourses)
 router.put("/updateDisplayPicture", auth, updateDisplayPicture)
 router.get("/instructorDashboard", auth, isInstructor, instructorDashboard)
+router.post("/UserDetailsById", UserDetailsById)
 
 module.exports = router

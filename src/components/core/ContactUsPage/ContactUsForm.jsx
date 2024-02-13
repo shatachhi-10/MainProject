@@ -4,7 +4,6 @@ import { useForm } from "react-hook-form"
 import CountryCode from "../../../data/countrycode.json"
 import { apiConnector } from "../../../services/apiConnector"
 import { contactusEndpoint } from "../../../services/apis"
-import toast from "react-hot-toast"
 
 const ContactUsForm = () => {
   const [loading, setLoading] = useState(false)
@@ -25,7 +24,6 @@ const ContactUsForm = () => {
         data
       )
       // console.log("Email Res - ", res)
-      toast.success("Messge sent successfully")
       setLoading(false)
     } catch (error) {
       console.log("ERROR MESSAGE - ", error.message)
@@ -48,9 +46,7 @@ const ContactUsForm = () => {
   return (
     <form
       className="flex flex-col gap-7"
-      onSubmit={handleSubmit(submitContactForm)
-      }
-      
+      onSubmit={handleSubmit(submitContactForm)}
     >
       <div className="flex flex-col gap-5 lg:flex-row">
         <div className="flex flex-col gap-2 lg:w-[48%]">
@@ -175,7 +171,6 @@ const ContactUsForm = () => {
       </div>
 
       <button
-     
         disabled={loading}
         type="submit"
         className={`rounded-md bg-yellow-50 px-6 py-3 text-center text-[13px] font-bold text-black shadow-[2px_2px_0px_0px_rgba(255,255,255,0.18)] 

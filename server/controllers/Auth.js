@@ -6,6 +6,7 @@ const otpGenerator = require("otp-generator")
 const mailSender = require("../utils/mailSender")
 const { passwordUpdated } = require("../mail/templates/passwordUpdate")
 const Profile = require("../models/Profile")
+const { findNextUnmarkedVideo } = require("./findNextUnmarkedVideo")
 require("dotenv").config()
 
 // Signup Controller for Registering USers
@@ -23,10 +24,6 @@ exports.signup = async (req, res) => {
       contactNumber,
       otp,
     } = req.body
-    // Convert email to lowercase
-    const lowerCaseEmail = email.toLowerCase();  
-
-    
     // Check if All Details are there or not
     if (
       !firstName ||
@@ -51,7 +48,7 @@ exports.signup = async (req, res) => {
     }
 
     // Check if user already exists
-    const existingUser = await User.findOne({ email:lowerCaseEmail })
+    const existingUser = await User.findOne({ email })
     if (existingUser) {
       return res.status(400).json({
         success: false,
@@ -60,8 +57,7 @@ exports.signup = async (req, res) => {
     }
 
     // Find the most recent OTP for the email
-    console.log("lowerCaseEmail-->",lowerCaseEmail)
-    const response = await OTP.find({ email:lowerCaseEmail }).sort({ createdAt: -1 }).limit(1)
+    const response = await OTP.find({ email }).sort({ createdAt: -1 }).limit(1)
     console.log(response)
     if (response.length === 0) {
       // OTP not found for the email
@@ -94,7 +90,7 @@ exports.signup = async (req, res) => {
     const user = await User.create({
       firstName,
       lastName,
-      email:lowerCaseEmail,
+      email,
       contactNumber,
       password: hashedPassword,
       accountType: accountType,
@@ -121,7 +117,7 @@ exports.signup = async (req, res) => {
 exports.login = async (req, res) => {
   try {
     // Get email and password from request body
-    let { email, password } = req.body
+    const { email, password } = req.body
 
     // Check if email or password is missing
     if (!email || !password) {
@@ -131,10 +127,6 @@ exports.login = async (req, res) => {
         message: `Please Fill up All the Required Fields`,
       })
     }
-
-    // Convert entered email to lowercase
-     email = email.toLowerCase();
-
 
     // Find user with provided email
     const user = await User.findOne({ email }).populate("additionalDetails")
@@ -190,23 +182,20 @@ exports.login = async (req, res) => {
 // Send OTP For Email Verification
 exports.sendotp = async (req, res) => {
   try {
-    let { email } = req.body
-    email= email.toLowerCase();
-        console.log("email-->",email)
+    const { email } = req.body
+
     // Check if user is already present
     // Find user with provided email
     const checkUserPresent = await User.findOne({ email })
     // to be used in case of signup
-    console.log("checkUserPresent-->",checkUserPresent)
+
     // If user found with provided email
     if (checkUserPresent) {
       // Return 401 Unauthorized status code with error message
-      
       return res.status(401).json({
         success: false,
         message: `User is Already Registered`,
       })
-      
     }
 
     var otp = otpGenerator.generate(6, {
@@ -215,6 +204,7 @@ exports.sendotp = async (req, res) => {
       specialChars: false,
     })
     const result = await OTP.findOne({ otp: otp })
+
     console.log("Result is Generate OTP Func")
     console.log("OTP", otp)
     console.log("Result", result)
@@ -240,6 +230,7 @@ exports.sendotp = async (req, res) => {
 // Controller for Changing Password
 exports.changePassword = async (req, res) => {
   try {
+
     // Get user data from req.user
     const userDetails = await User.findById(req.user.id)
 

@@ -24,10 +24,7 @@ const Contact = () => {
         <h1 className="text-center text-4xl font-semibold mt-8">
           Reviews from other learners
         </h1>
-        <div className="w-[500px] mx-auto ">
         <ReviewSlider />
-        </div>
-        
       </div>
       <Footer />
     </div>

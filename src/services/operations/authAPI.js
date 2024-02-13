@@ -30,13 +30,12 @@ export function sendOtp(email, navigate) {
       if (!response.data.success) {
         throw new Error(response.data.message)
       }
-     
 
       toast.success("OTP Sent Successfully")
       navigate("/verify-email")
     } catch (error) {
       console.log("SENDOTP API ERROR............", error)
-      toast.error(error.message);
+      toast.error("Could Not Send OTP")
     }
     dispatch(setLoading(false))
     toast.dismiss(toastId)
@@ -99,6 +98,11 @@ export function login(email, password, navigate) {
       if (!response.data.success) {
         throw new Error(response.data.message)
       }
+      // setItem in localStorage
+      localStorage.setItem(
+        process.env.REACT_APP_LOCALHOST_KEY,
+        JSON.stringify(response.data.user)
+      );
 
       toast.success("Login Successful")
       dispatch(setToken(response.data.token))
