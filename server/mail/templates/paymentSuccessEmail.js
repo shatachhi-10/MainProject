@@ -27,6 +27,7 @@ exports.paymentSuccessEmail = (name, amount, orderId, paymentId) => {
             .logo {
                 max-width: 200px;
                 margin-bottom: 20px;
+                filter: brightness(0) invert(1) sepia(1) saturate(5) hue-rotate(200deg);
             }
     
             .message {
@@ -67,8 +68,8 @@ exports.paymentSuccessEmail = (name, amount, orderId, paymentId) => {
     
     <body>
         <div class="container">
-            <a href="https://studynotion-edtech-project.vercel.app"><img class="logo" src="https://i.ibb.co/7Xyj3PC/logo.png"
-                    alt="StudyNotion Logo"></a>
+            <a href="https://pedagox-a-learning-app.vercel.app/"><img class="logo" src="https://i.postimg.cc/3R84Njb2/logos-1.png"
+                    alt="Logo" color="grey"></a>
             <div class="message">Course Payment Confirmation</div>
             <div class="body">
                 <p>Dear ${name},</p>
@@ -77,7 +78,7 @@ exports.paymentSuccessEmail = (name, amount, orderId, paymentId) => {
                 <p>Your Order ID is <b>${orderId}</b></p>
             </div>
             <div class="support">If you have any questions or need assistance, please feel free to reach out to us at <a
-                    href="mailto:info@studynotion.com">info@studynotion.com</a>. We are here to help!</div>
+                    href="mailto:info@pedagox.com">info@pedagox.com</a>. We are here to help!</div>
         </div>
     </body>
     

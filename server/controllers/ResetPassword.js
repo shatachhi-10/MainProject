@@ -24,13 +24,13 @@ exports.resetPasswordToken = async (req, res) => {
     );
     console.log("DETAILS", updatedDetails);
 
-    const url = `http://localhost:3000/update-password/${token}`;
-    // const url = `https://shubh-tech-app.vercel.app/update-password/${token}`;
+    // const url = `http://localhost:3000/update-password/${token}`;
+     const url = `https://pedagox-a-learning-app.vercel.app//update-password/${token}`;
 
     await mailSender(
       email,
       "Password Reset",
-      `Your Link for email verification is ${url}. Please click this url to reset your password.`
+      `Your Link for email verification is ${url} Please click this url to reset your password.`
     );
 
     res.json({
