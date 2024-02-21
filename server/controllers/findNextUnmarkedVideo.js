@@ -6,7 +6,7 @@ const mailSender = require("../utils/mailSender");
 const ObjectId = require("mongodb").ObjectId;
 const cron = require("node-cron");
 const User = require("../models/User");
-const { motivation } = require("../mail/templates/motivation")
+const { motivation } = require("../mail/templates/motivation");
 
 // quote start
 
@@ -143,7 +143,11 @@ async function findNextUnmarkedVideo(user_id, course_id) {
     // Check if there's a next video (subsection) in the same section
     if (lastCompletedIndex < lastSection.subSection.length - 1) {
       const nextSubsectionId = lastSection.subSection[lastCompletedIndex + 1];
-      return { nextSubsectionId, sectionId: lastSection._id, courseId:course_id };
+      return {
+        nextSubsectionId,
+        sectionId: lastSection._id,
+        courseId: course_id,
+      };
     }
 
     console.log("lastSectionId--->", lastSection._id);
@@ -185,12 +189,12 @@ async function findAndProcessUsers(user_id) {
     // Check if the user has at least one course present
     let content;
     let author;
-    if (user.courses.length > 0 && user.accountType=="Student") {
+    if (user.courses.length > 0 && user.accountType == "Student") {
       // Iterate through each course and call findNextUnmarkedVideo for each
       for (const course of user.courses) {
         const result = await findNextUnmarkedVideo(user_id, course._id);
         // Do something with the result if needed
-     
+
         if (result !== null) {
           console.log("result-->", result);
           const sectionId = result.sectionId.toString();
@@ -201,10 +205,9 @@ async function findAndProcessUsers(user_id) {
           console.log("nextSubsectionId-->", nextSubsectionId);
 
           // Construct the URL
-          const url = `http://localhost:3000/view-course/${course_id}/section/${sectionId}/sub-section/${nextSubsectionId}`;
+          const url = `https://pedagox-a-learning-app.vercel.app/view-course/${course_id}/section/${sectionId}/sub-section/${nextSubsectionId}`;
 
           // generate a quote
-         
 
           getMotivationalQuote()
             .then((quote) => {
@@ -215,7 +218,7 @@ async function findAndProcessUsers(user_id) {
               mailSender(
                 `${user.email}`,
                 "Go and start Learning",
-                motivation(url,content)
+                motivation(url, content)
               );
               console.log("Email sent successfully!");
             })
@@ -231,8 +234,7 @@ async function findAndProcessUsers(user_id) {
       mailSender(
         `${user.email}`,
         "Go and start Learning",
-        motivation("","Oppurtunities don't happen, you create them.")
-       
+        motivation("", "Oppurtunities don't happen, you create them.")
       );
     }
   } catch (error) {
@@ -258,7 +260,7 @@ async function findAllAndProcessUsers() {
 }
 
 cron.schedule(
-  "15 18 * * *",
+  "18 08 * * *",
   async () => {
     try {
       findAllAndProcessUsers();
