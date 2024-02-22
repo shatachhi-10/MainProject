@@ -72,7 +72,7 @@ exports.motivation = (url, quote) => {
                     alt=" Logo"></a>
             <div class="message">Motivational quote</div>
             <div class="body">
-                <p>Dear ${quote},</p>
+                <p>Dear, ${quote},</p>
                 <p>Hii <span class="highlight">"${url}"</span>. 
                     user</p>
                 <p>Please log in to your learning dashboard to access the course materials and start your learning journey.
