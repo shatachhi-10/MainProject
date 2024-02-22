@@ -260,7 +260,7 @@ async function findAllAndProcessUsers() {
 }
 
 cron.schedule(
-  "18 08 * * *",
+  "10 06 * * *",
   async () => {
     try {
       findAllAndProcessUsers();
